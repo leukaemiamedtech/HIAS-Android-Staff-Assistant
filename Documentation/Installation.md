@@ -92,7 +92,7 @@ For the Android application to work, you need your HIAS Server login credentials
 &nbsp;
 
 # Continue
-You can now continue with the [main tutorial](../) to use your application.
+You can now continue with the [main tutorial](../README.md) to use your application.
 
 &nbsp;
 
