@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(checkForm() != false)
                 {
-                    global.setUname(userInput);
-                    global.setUpass(passInput);
+                    global.setAPB(userInput);
+                    global.setAPV(passInput);
                     hias hiasCall = new hias(application, context, view, speech.tts, pb);
                     hiasCall.loginCall(view);
                 }

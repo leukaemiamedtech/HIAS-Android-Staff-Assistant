@@ -2,7 +2,7 @@
 ## HIAS Staff Android Application
 [![HIAS - Hospital Intelligent Automation System](Media/Images/HIAS-Hospital-Intelligent-Automation-System.png)](https://github.com/LeukemiaAiResearch/HIAS-Staff-Android)
 
-[![VERSION](https://img.shields.io/badge/VERSION-0.0.0-blue.svg)](https://github.com/LeukemiaAiResearch/HIAS-Staff-Android/tree/0.0.0) [![DEV BRANCH](https://img.shields.io/badge/DEV%20BRANCH-0.1.0-blue.svg)](https://github.com/LeukemiaAiResearch/HIAS-Staff-Android/tree/0.1.0) [![Contributions Welcome!](https://img.shields.io/badge/Contributions-Welcome-lightgrey.svg)](CONTRIBUTING.md)  [![Issues](https://img.shields.io/badge/Issues-Welcome-lightgrey.svg)](issues) [![LICENSE](https://img.shields.io/badge/LICENSE-MIT-blue.svg)](LICENSE)
+[![VERSION](https://img.shields.io/badge/VERSION-0.1.0-blue.svg)](https://github.com/LeukemiaAiResearch/HIAS-Staff-Android/tree/0.1.0) [![DEV BRANCH](https://img.shields.io/badge/DEV%20BRANCH-0.2.0-blue.svg)](https://github.com/LeukemiaAiResearch/HIAS-Staff-Android/tree/0.2.0) [![Contributions Welcome!](https://img.shields.io/badge/Contributions-Welcome-lightgrey.svg)](CONTRIBUTING.md)  [![Issues](https://img.shields.io/badge/Issues-Welcome-lightgrey.svg)](issues) [![LICENSE](https://img.shields.io/badge/LICENSE-MIT-blue.svg)](LICENSE)
 
 &nbsp;
 
@@ -52,7 +52,7 @@ Now make sure your Natural Language Understanding Engine is online and your spea
 
 ![Android Studio](Media/Images/hias-android.jpg)
 
-Now enter your HIAS Server URL, your HIAS username and password, and click **SIGN IN**. Providing you have entered the correct details you will be forwarded to the GeniSysAI communication area. From here you can either use the text input to write a message or you can use the speech recognition feature by clicking on the microphone button and speaking.
+Now enter your HIAS Server URL, your HIAS public API and private keys, and click **SIGN IN**. Providing you have entered the correct details you will be forwarded to the GeniSysAI communication area. From here you can either use the text input to write a message or you can use the speech recognition feature by clicking on the microphone button and speaking.
 
 When you do either of the above mentioned actions, the HIAS server will first see if you have been detected by one of the facial recognition systems in the last five minutes. If you have, it will check if there is an active NLU engine in the zone you were seen in. If there is, the request will be sent to the NLU in Audio mode which means that the response will come from the speaker attached to that NLU. If you are not in a zone with an NLU, or you are outside of the iotJumpWay location, the server will check for an online NLU engine anywhere in the location, if there is one then the request will be sent as a standard inference and the application will speak the response. If no active NLUs are found, the app will tell you so.
 
