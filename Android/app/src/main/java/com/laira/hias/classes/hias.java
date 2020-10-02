@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class hias {
 
     private Application application;
     private Context context;
+    private View view;
     private RequestQueue requestQueue;
     private TextToSpeech tts;
 
@@ -37,6 +39,7 @@ public class hias {
     public hias(Application application, Context context, View view, TextToSpeech tts, ProgressBar pb){
         this.application = application;
         this.context = context;
+        this.view = view;
         this.pb = pb;
         this.tts = tts;
     }
@@ -46,8 +49,7 @@ public class hias {
         JSONObject json = new JSONObject();
 
         try {
-            json.put("uname", global.getUname());
-            json.put("upass", global.getUpass());
+            json.put("apub", global.getAPB());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -67,8 +69,7 @@ public class hias {
                                 JSONObject jsnobj = response.getJSONObject("Data");
                                 global.setUID(jsnobj.getInt("UID"));
                                 global.setAID(jsnobj.getInt("AID"));
-                                global.setAPB(jsnobj.getString("APB"));
-                                global.setAPV(jsnobj.getString("APV"));
+
                                 speech.ConvertTextToSpeech("Welcome " + jsnobj.getString("UN"),
                                         tts);
                                 Intent intent = new Intent(context, GeniSysAiActivity.class);
@@ -77,6 +78,7 @@ public class hias {
                             } else {
                                 global.setUname("");
                                 global.setUpass("");
+                                Log.e(global.getTag() + " Error", responseMessage);
                                 speech.ConvertTextToSpeech(responseMessage, tts);
                                 Toast.makeText(context,responseMessage,Toast.LENGTH_SHORT).show();
                                 pb.setVisibility(View.GONE);
@@ -92,14 +94,19 @@ public class hias {
             public void onErrorResponse(VolleyError error) {
                 String rerror = "There was an error, please check your credentials and try again";
                 Toast.makeText(context, rerror, Toast.LENGTH_SHORT).show();
+                Log.e(global.getTag() + " Error", "HIAS Response: "+ error.toString());
                 speech.ConvertTextToSpeech(rerror, tts);
                 pb.setVisibility(View.GONE);
             }
         }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                String authKeys = global.getAPB() + ":" + global.getAPV();
+                String auth = Base64.encodeToString(authKeys.getBytes(),
+                        Base64.NO_WRAP);
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Authorization", "Basic " + auth);
                 return headers;
             }
         };
@@ -118,8 +125,6 @@ public class hias {
 
         try {
             json.put("uid", global.getUID());
-            json.put("uname", global.getUname());
-            json.put("upass", global.getUpass());
             json.put("query", heard);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,6 +136,7 @@ public class hias {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.i(global.getTag() + " Info", "NLU Response: " + response.toString());
 
                         try {
                             String responseStatus = response.getString("Response");
@@ -140,6 +146,7 @@ public class hias {
                                 JSONObject jsnobj = response.getJSONObject("Data");
                                 boolean isAudio = response.getBoolean("Audio");
                                 String finalResp = jsnobj.getString("Response");
+                                Log.i(global.getTag() + " Info", "Extracted response");
                                 if(!isAudio)
                                 {
                                     speech.ConvertTextToSpeech(finalResp, tts);
@@ -157,11 +164,12 @@ public class hias {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(global.getTag() + " Error", "HIAS Response: "+ error.toString());
             }
         }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                String authKeys = global.getUname() + ":" + global.getAPV();
+                String authKeys = global.getAPB() + ":" + global.getAPV();
                 String auth = Base64.encodeToString(authKeys.getBytes(),
                         Base64.NO_WRAP);
                 HashMap<String, String> headers = new HashMap<String, String>();
